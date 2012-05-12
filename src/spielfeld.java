@@ -1,8 +1,5 @@
-
-
 public class spielfeld {
 	public static void main(String[] args) {
-
 	int x = 1;
 	int y = 1;
 	int hoehe = Integer.parseInt(args[0])*2;

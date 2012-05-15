@@ -7,8 +7,10 @@
 	import java.awt.MediaTracker;
 	import java.awt.Toolkit;
 	import javax.swing.JPanel;
+	import java.awt.*;
+	import java.awt.event.*;
 
-public class Hauptmenue extends javax.swing.JFrame {
+public class Hauptmenue extends javax.swing.JFrame implements ActionListener {
 
     /**
      * Creates new form NewJFrame
@@ -31,7 +33,7 @@ public class Hauptmenue extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setContentPane(new BackGroundPane("H:hintergrund_bomberman2.png"));
+        setContentPane(new BackGroundPane("hintergrund_bomberman2.png"));
         setTitle("Bomberman");
         setBackground(new java.awt.Color(255, 255, 255));
         setBounds(new java.awt.Rectangle(0, 0, 500, 500));
@@ -45,6 +47,7 @@ public class Hauptmenue extends javax.swing.JFrame {
         jButton2.setText("Einstellungen");
 
         jButton3.setText("Exit");
+        jButton3.addActionListener(this);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,7 +75,10 @@ public class Hauptmenue extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public void actionPerformed(ActionEvent evt)
+    {
+    System.exit(0);
+    }
     /**
      * @param args the command line arguments
      */
@@ -111,6 +117,7 @@ public class Hauptmenue extends javax.swing.JFrame {
 
             public void run() {
                 new Hauptmenue().setVisible(true);
+                
             }
         });
     }
@@ -118,6 +125,7 @@ public class Hauptmenue extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    
     // End of variables declaration//GEN-END:variables
     
     class BackGroundPane extends JPanel {
@@ -141,5 +149,6 @@ public class Hauptmenue extends javax.swing.JFrame {
             g.drawImage(img,0,0,this.getWidth(),this.getHeight(),this);
         }
     }
+    
 }
 

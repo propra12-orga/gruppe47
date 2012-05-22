@@ -11,13 +11,6 @@ import Spielfeld.spielfeld;
 import java.io.*;
 
 /**
- * File:         BomberBomb
- * Copyright:    Copyright (c) 2009
- * @author Avinash Kumar Sharma
- * @version 1.0
- */
-
-/**
  * This class creates the bombs in the game.
  */
 public class bombe extends Thread {

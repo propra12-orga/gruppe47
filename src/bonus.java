@@ -10,13 +10,7 @@ import Spielfeld.spielfeld;
 
 import java.io.*;
 
-/**
- * File:         bonus
- * Copyright:    Copyright (c) 2009
- * @author Avinash Kumar Sharma
- * @version 1.0
- */
-
+ 
 /**
  * This class creates the bonuses in the game.
  */

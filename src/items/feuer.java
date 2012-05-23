@@ -96,10 +96,6 @@ public class feuer extends Thread {
      */
     public void paint() {
         Graphics g = feld.getGraphics();
-        /** wenn java runtzeit Java 2 ist*/
-    
-        /** wenn nicht */
-        else {
              g.drawImage(images[type][frame], x, y,
              HauptMain.size, HauptMain.size, null);
         }

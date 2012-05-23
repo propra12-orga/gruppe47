@@ -98,7 +98,7 @@ public class feuer extends Thread {
         Graphics g = feld.getGraphics();
              g.drawImage(images[type][frame], x, y,
              HauptMain.size, HauptMain.size, null);
-        }
+        
         g.dispose();
     }
 

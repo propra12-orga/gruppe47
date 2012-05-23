@@ -24,9 +24,6 @@ public class Main
     */
     public static void main(String[] args)
     {
-        boolean bombermanMode = false;
-        boolean badArg = false;
-
         startBomberman();
     }
 }

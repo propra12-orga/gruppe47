@@ -9,6 +9,7 @@ import Spielfeld.spielfeld;
 import sound.Soundeffekt;
 import sound.bgm;
 
+import einstellungen.Error;
 
 import java.lang.Integer;
 import java.io.*;

@@ -30,23 +30,7 @@ public class bilder {
     private static Object hints = null;
 
     static {
-        /** if java runtime is Java 2 */
-        if (Main.J2) {
-            /** create the rendering hints for better graphics output */
-            RenderingHints h = null;
-            h = new RenderingHints(null);
-            h.put(RenderingHints.KEY_TEXT_ANTIALIASING,
-             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            h.put(RenderingHints.KEY_FRACTIONALMETRICS,
-             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-            h.put(RenderingHints.KEY_ALPHA_INTERPOLATION,
-             RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            h.put(RenderingHints.KEY_ANTIALIASING,
-             RenderingHints.VALUE_ANTIALIAS_ON);
-            h.put(RenderingHints.KEY_COLOR_RENDERING,
-             RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-            hints = (RenderingHints)h;
-        }
+       
     }
 
     /**
@@ -100,16 +84,12 @@ public class bilder {
      * @param graphics graphics handler
      */
     public void paint(Graphics graphics) {
-        /** if java runtime is Java 2 */
-        if (Main.J2) { paint2D(graphics); }
-        /** if java runtime isn't Java 2 */
-        else {
             Graphics g = graphics;
             /** draw the button */
             g.drawImage(images[state], x, y, w / (32 / HauptMain.size * 2),
             h / (32 / HauptMain.size * 2), null);
         }
-    }
+   
 
     /**
      * Drawing method for Java 2's Graphics2D

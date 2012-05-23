@@ -29,25 +29,7 @@ public class feuer extends Thread {
     /** hints */
     private static Object hints = null;
 
-    static {
-        /**wenn java runzeit Java 2 ist*/
-        if (Main.J2) {
-            /** graphics output */
-            RenderingHints h = null;
-            h = new RenderingHints(null);
-            h.put(RenderingHints.KEY_TEXT_ANTIALIASING,
-             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            h.put(RenderingHints.KEY_FRACTIONALMETRICS,
-             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-            h.put(RenderingHints.KEY_ALPHA_INTERPOLATION,
-             RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            h.put(RenderingHints.KEY_ANTIALIASING,
-             RenderingHints.VALUE_ANTIALIAS_ON);
-            h.put(RenderingHints.KEY_COLOR_RENDERING,
-             RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-            hints = (RenderingHints)h;
-        }
-    }
+
 
     public feuer(spielfeld feld, int x, int y, int type) {
         this.feld = feld;
@@ -115,7 +97,7 @@ public class feuer extends Thread {
     public void paint() {
         Graphics g = feld.getGraphics();
         /** wenn java runtzeit Java 2 ist*/
-        if (Main.J2) { paint2D(feld.getGraphics()); }
+    
         /** wenn nicht */
         else {
              g.drawImage(images[type][frame], x, y,

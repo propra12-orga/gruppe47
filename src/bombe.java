@@ -84,13 +84,7 @@ public class bombe extends Thread {
             /** rotate frame */
             frame = (frame + 1) % 2;
             /** sleep for 130 ms */
-            try { sleep(130); } catch (Exception e) {}
-            if (!alive) break;
-            /** decrease count down */
-            countDown -= 130;
-            /** if count down reached 0 then exit */
-            /** the loop and short the bomb */
-            if (countDown <= 0) break;
+           
         }
         /** remove it from the grid */
         feld.grid[x >> HauptMain.shiftCount][y >> HauptMain.shiftCount] =

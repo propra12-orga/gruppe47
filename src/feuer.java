@@ -7,15 +7,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import Spielfeld.spielfeld;
-
-/**
- * Title:        Bomberman
- * Description:
- * Copyright:    Copyright (c) 2009
- * @author Avinash Kumar Sharma
- * @version 1.0
- */
-
 public class feuer extends Thread {
     /** feld object */
     private spielfeld feld = null;

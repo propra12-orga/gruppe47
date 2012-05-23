@@ -7,7 +7,7 @@ import javax.swing.*;
 import Spielfeld.figur;
 import Spielfeld.spielfeld;
 
-import einstellungen.Error;
+import einstellung.Error;
 
 import java.io.*;
 

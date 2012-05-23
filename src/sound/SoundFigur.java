@@ -165,7 +165,7 @@ implements Runnable, LineListener, MetaEventListener, ActionListener
     public boolean loadSound(Object object)
     {
         
-        else if (object instanceof File)
+        if (object instanceof File)
         {
             
             currentName = ((File) object).getName();

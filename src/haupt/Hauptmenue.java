@@ -31,7 +31,7 @@ public class Hauptmenue extends JPanel {
         Toolkit tk = Toolkit.getDefaultToolkit();
         String path = HauptMain.RP + "Images/BomberMenu/";
         String file = null;
-        
+        try {
             file = "hintergrund_bomberman2.png";
             backgroundImg = tk.getImage(new File(file).getCanonicalPath());
 
@@ -44,7 +44,8 @@ public class Hauptmenue extends JPanel {
                 buttonImagesUp[i] = tk.getImage(
                 new File(file + " Up.gif").getCanonicalPath());
             }
-        
+        }
+        catch (Exception e) { new Error(e);}
     }
 
     /**
@@ -57,7 +58,7 @@ public class Hauptmenue extends JPanel {
         30 << main.shiftCount));
 
         MediaTracker mt = new MediaTracker(this);
-
+try {
             int counter = 0;
             mt.addImage(backgroundImg, counter++);
             for (int i = 0; i < 5; i++) {
@@ -65,6 +66,8 @@ public class Hauptmenue extends JPanel {
                 mt.addImage(buttonImagesUp[i], counter++);
             }
             mt.waitForAll();
+    }
+            catch (Exception e) { new Error(e);}
        
         imageButtons = new bilder[5];
         for (int i = 0; i < 5; i++) {

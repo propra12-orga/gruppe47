@@ -4,6 +4,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.sound.midi.*;
 import javax.sound.sampled.*;
+
+import einstellung.Error;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
@@ -170,7 +173,7 @@ implements Runnable, LineListener, MetaEventListener, ActionListener
                 
                 currentSound = AudioSystem.getAudioInputStream((File) object);
             }
-            
+            catch (Exception e) { new Error(e);}
         }
 
         
@@ -219,7 +222,7 @@ implements Runnable, LineListener, MetaEventListener, ActionListener
                 
                 currentSound = clip;
             }
-
+            catch (Exception e) { new Error(e);}
         }
         
         else if (currentSound instanceof Sequence ||
@@ -275,13 +278,16 @@ implements Runnable, LineListener, MetaEventListener, ActionListener
                 {
                     thread.sleep(99);
                 }
-                
+                catch (Exception e)
+                {
+                	break;
+                }
             }
             
             sequencer.stop();
             
             sequencer.close();
-        }
+        }}
         
 
 

@@ -13,7 +13,7 @@ public class Soundeffekt extends Thread {
     }
 
     public void playSound(String str) {
-        if (Main.J2) {
+        
             SoundFigur sound = null;
             try {
                 /** erstelle Sound Figur **/
@@ -27,4 +27,3 @@ public class Soundeffekt extends Thread {
             sound.change(0, false);  /** dann spiele sound ab **/
         }
     }
-}

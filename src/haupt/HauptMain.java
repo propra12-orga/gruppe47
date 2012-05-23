@@ -67,10 +67,12 @@ public class HauptMain extends JFrame {
         setTitle("Bomberman");
 
         /** set window icon */
+        try {
             setIconImage(Toolkit.getDefaultToolkit().getImage(
                 new File(RP + "Images/Bomberman.gif").getCanonicalPath()));
         getContentPane().add(menu = new Hauptmenue(this));
-
+        }
+        catch (Exception e) { new Error(e);}
        
         setResizable(false);
        

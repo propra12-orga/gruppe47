@@ -7,7 +7,6 @@ import javax.swing.*;
 import Spielfeld.figur;
 import Spielfeld.spielfeld;
 
-import einstellung.Error;
 
 import java.io.*;
 
@@ -31,7 +30,8 @@ implements ActionListener {
         String path = HauptMain.RP + "Images/BomberEndGame/";
         String str = null;
         images = new Image[6];
-        
+        try
+        {
             for (int i = 0; i < 4; i++) {
                 str = path + "Player " + (i + 1) + " Wins.jpg";
                 images[i] = Toolkit.getDefaultToolkit().getImage(
@@ -43,6 +43,8 @@ implements ActionListener {
             str = path + "Enter to Continue.jpg";
             images[5] = Toolkit.getDefaultToolkit().getImage(
             new File(str).getCanonicalPath());
+        }
+        catch (Exception e) { new Error(e);}
     }
 
     /**
@@ -55,10 +57,12 @@ implements ActionListener {
         this.main = main;
         this.feld = feld;
         this.totalPlayers = this.playersLeft = totalPlayers;
-        
+        try {
             MediaTracker tracker = new MediaTracker(this);
             for (int i = 0; i < 6; i++) tracker.addImage(images[i], i);
             tracker.waitForAll();
+        }
+        catch (Exception e) { new Error(e);}
 
         players = new figur[totalPlayers];
         /** create the players */

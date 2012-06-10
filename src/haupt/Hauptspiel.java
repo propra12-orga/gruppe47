@@ -58,13 +58,13 @@ implements ActionListener {
         this.main = main;
         this.feld = feld;
         this.totalPlayers = this.playersLeft = totalPlayers;
-        try {
+      /*  try {
             MediaTracker tracker = new MediaTracker(this);
             for (int i = 0; i < 6; i++) tracker.addImage(images[i], i);
             tracker.waitForAll();
         }
         catch (Exception e) { new Error(e);}
-
+*/
         players = new figur[totalPlayers];
         /** create the players */
         for (int i = 0; i < totalPlayers; i++)

@@ -635,6 +635,19 @@ public class figur extends Thread {
                 shiftCount].giveToPlayer(playerNo);
                 bx = by = 0;
             }
+            /** wenn spieler trettet auf ein exit */
+            if (feld.exitGrid[x >> shiftCount][y >> shiftCount] != null)
+               { bx = x; by = y; }
+            else if (feld.exitGrid[x >> shiftCount][(y + halfSize)
+                 >> shiftCount] != null) { bx = x; by = y + halfSize; }
+            else if (feld.exitGrid[(x + halfSize) >> shiftCount][y
+                 >> shiftCount] != null) { bx = x + halfSize; by = y; }
+
+            if (bx != 0 && by != 0) {
+                feld.exitGrid[bx >> shiftCount][by >>
+                shiftCount].giveToPlayer(playerNo);
+                bx = by = 0;
+            }
             /** wenn tot exit */
             if (isDead) break;
             try { sleep(65); } catch (Exception e) { }

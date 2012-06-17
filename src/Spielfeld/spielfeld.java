@@ -5,6 +5,7 @@ import haupt.Main;
 import items.bombe;
 import items.bonus;
 import items.feuer;
+import items.exit;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -15,28 +16,35 @@ import einstellung.Error;
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * This class draws the map and handles things like bonuses and bombs.
+ */
 public class spielfeld extends JPanel {
     /** frame Objekt */
     private HauptMain main = null;
-    /** Spiel */
+    /** game over flag */
     private boolean gameOver = false;
-    /** hintergrundfarbe */
+    /** background color */
     private Color backgroundColor = null;
-    /** feld raster */
+    /** the map grid array */
     public int[][] grid = null;
-    /** feuer raster */
+    /** fire grid */
     public boolean[][] fireGrid = null;
-    /** bomben raster */
+    /** bomb grid */
     public bombe[][] bombGrid = null;
-    /** bonus raster */
+    /** bonus grid */
     public bonus[][] bonusGrid = null;
-    /** bombe */
+    /** exit grid */
+    public exit[][] exitGrid = null;
+    /** bombs */
     private Vector bombs = null;
-    /** bonus */
+    /** bonuses */
     private Vector bonuses = null;
+    /** exit */
+    private Vector exits = null;
 
     /**
-     * Klasse Bombe
+     * Bomb info class
      */
     private class Bomb {
         public Bomb(int x, int y) {
@@ -48,7 +56,7 @@ public class spielfeld extends JPanel {
     }
 
     /**
-     * Klasse Bonus
+     * Bonus info class
      */
     private class Bonus {
         public Bonus(int x, int y) {
@@ -58,8 +66,19 @@ public class spielfeld extends JPanel {
         public int r = 0;
         public int c = 0;
     }
+    /**
+     * Exit info class
+     */
+    private class Exit {
+        public Exit(int x, int y) {
+            r = (x >> HauptMain.shiftCount);
+            c = (y >> HauptMain.shiftCount);
+        }
+        public int r = 0;
+        public int c = 0;
+    }
 
-    /** Bild Handler für die FeldBilder */
+    /** image handles for the map images */
     private static Image[][] feldImages = null;
     /** BombenBild */
     public static Image[] bombImages = null;
@@ -69,6 +88,8 @@ public class spielfeld extends JPanel {
     public static Image[][] fireBrickImages = null;
     /** BonusBilder */
     public static Image[][] bonusImages = null;
+    /** Exit Bilder */
+    public static Image[][] exitImages = null;
     /** Feuertyp aufzählung */
     public static final int FIRE_CENTER = 0;
     public static final int FIRE_VERTICAL = 1;
@@ -79,16 +100,21 @@ public class spielfeld extends JPanel {
     public static final int FIRE_WEST = 6;
     public static final int FIRE_BRICK = 7;
     /** raster aufzählung */
+    public static final int EXIT_FIRE = -6;
+    public static final int EXIT_BOMB = -5;
     public static final int BONUS_FIRE = -4;
     public static final int BONUS_BOMB = -3;
     public static final int NOTHING = -1;
     public static final int WALL = 0;
     public static final int BRICK = 1;
     public static final int BOMB = 3;
+    public static final int EXIT = 4;
     /** zufälliges level generator */
     private static Rand levelRand = null;
     /** zufällig bonus generieren */
     private static Rand bonusRand = null;
+    /** zufällig exit generieren */
+    private static Rand exitRand = null;
     /** aktuelles Level */
     public static int level = 0;
     private static Object hints = null;
@@ -100,10 +126,13 @@ public class spielfeld extends JPanel {
         levelRand = new Rand(0, 100);
         /** erstellt bonus zufällig */
         bonusRand = new Rand(0, 7);
+        /** erstellt exit zufällig */
+        exitRand = new Rand(0, 7);
         /** Erstellt Bild Objekt array */
         feldImages = new Image[3][3];
         /** Erstellt Bomben Objekt Array */
         bombImages = new Image[2];
+        exitImages = new Image[2][2];
         fireImages = new Image[8][8];
         fireBrickImages = new Image[3][8];
         bonusImages = new Image[2][2];
@@ -174,6 +203,13 @@ public class spielfeld extends JPanel {
                 bonusImages[i][f] = Toolkit.getDefaultToolkit().getImage(
                 new File(str).getCanonicalPath());
             }
+            /** lade exit bilder */
+            for (int i = 0; i < 2; i++) for (f = 0; f < 2; f++) {
+                str = HauptMain.RP + "Images/BomberExit/" + (i + 1) + 
+                (i == 0 ? "F" : "B") + (f + 1) + ".gif";
+                exitImages[i][f] = Toolkit.getDefaultToolkit().getImage(
+                new File(str).getCanonicalPath());
+            }
         }
         catch (Exception e) { new Error(e); }
     }
@@ -203,9 +239,12 @@ public class spielfeld extends JPanel {
 
         bombs = new Vector();
         bonuses = new Vector();
+        exits = new Vector();
         fireGrid = new boolean[30][30];
         bombGrid = new bombe[30][30];
         bonusGrid = new bonus[30][30];
+        exitGrid = new exit[30][30];
+        
         /** Erstelle feld raster */
         grid = new int[30][30];
         /** fülle den rand mit ausnahme des spielers */
@@ -217,6 +256,7 @@ public class spielfeld extends JPanel {
             fireGrid[r][c] = false;
             bombGrid[r][c] = null;
             bonusGrid[r][c] = null;
+            exitGrid[r][c] = null;
         }
 
         int x, y;
@@ -257,6 +297,50 @@ public class spielfeld extends JPanel {
         30 << HauptMain.shiftCount, 30 << HauptMain.shiftCount);
      }
 
+     /**
+      * Erstelle EXIT
+      * @param x x-coordinate
+      * @param y y-coordinate
+      * @param owner owner
+      */
+    public synchronized void createExit(int x, int y) {
+        int _x = (x >> HauptMain.shiftCount) << HauptMain.shiftCount;
+        int _y = (y >> HauptMain.shiftCount) << HauptMain.shiftCount;
+        int type = exitRand.draw();
+        /** erstelle exit : 0 = feuer; 1 = bombe */
+        if (type == 0 || type == 1) {
+           exitGrid[_x >> HauptMain.shiftCount][_y >> HauptMain.shiftCount] =
+           new exit(this, _x, _y, type);
+           exits.addElement(new Exit(_x, _y));
+        }
+    }
+    
+    /**
+     * Lösche exit
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
+    public synchronized void removeExit(int x, int y) {
+        int i = 0, k = exits.size();
+        int r = (x >> HauptMain.shiftCount);
+        int c = (y >> HauptMain.shiftCount);
+        Exit b = null;
+        while (i < k) {
+            b = (Exit)exits.elementAt(i);
+            if (b.r == r && b.c == c) {
+                exits.removeElementAt(i);
+                exitGrid[b.r][b.c].kill();
+                exitGrid[b.r][b.c] = null;
+                paintImmediately(b.r << HauptMain.shiftCount,
+                b.c << HauptMain.shiftCount, HauptMain.size,
+                HauptMain.size);
+                break;
+            }
+            i += 1;
+            k = exits.size();
+        }
+     }
+    
      /**
       * Erstelle Bonus
       * @param x x-coordinate
@@ -510,6 +594,16 @@ public class spielfeld extends JPanel {
                    bonusGrid[bb.r][bb.c].paint(g);
                 i += 1;
                 k = bonuses.size();
+            }
+            /** zeichne exit */
+            Exit bbb = null;
+            i = 0; k = exits.size();
+            while (i < k) {
+                bbb = (Exit)exits.elementAt(i);
+                if (exitGrid[bbb.r][bbb.c] != null)
+                   exitGrid[bbb.r][bbb.c].paint(g);
+                i += 1;
+                k = exits.size();
             }
             /** zeichne bombe */
             Bomb b = null;

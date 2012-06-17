@@ -52,6 +52,12 @@ public class feuer extends Thread {
            /** bonus benutzen */
            feld.removeBonus(x, y);
         }
+        /** exit*/
+        if (feld.exitGrid[x >> HauptMain.shiftCount]
+        [y >> HauptMain.shiftCount] != null) {
+           /** exit benutzen */
+           feld.removeExit(x, y);
+        }
 
         setPriority(Thread.MAX_PRIORITY);
         start();
@@ -88,7 +94,7 @@ public class feuer extends Thread {
         
         feld.paintImmediately(x, y, HauptMain.size, HauptMain.size);
        
-        if (type == spielfeld.FIRE_BRICK) { feld.createBonus(x, y); }
+        if (type == spielfeld.FIRE_BRICK) { feld.createBonus(x, y); feld.createExit(x, y);}
     }
 
     /**

@@ -57,7 +57,7 @@ public abstract class tasten {
         keys[P1][DOWN] = KeyEvent.VK_DOWN;
         keys[P1][LEFT] = KeyEvent.VK_LEFT;
         keys[P1][RIGHT] = KeyEvent.VK_RIGHT;
-        keys[P1][BOMB] = KeyEvent.VK_NUMPAD0;
+        keys[P1][BOMB] = KeyEvent.VK_0;
 
         keys[P2][UP] = KeyEvent.VK_W;
         keys[P2][DOWN] = KeyEvent.VK_S;

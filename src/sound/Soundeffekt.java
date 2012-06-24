@@ -1,6 +1,5 @@
 package sound;
 import haupt.HauptMain;
-import haupt.Main;
 
 import java.io.*;
 

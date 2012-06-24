@@ -2,6 +2,8 @@ package haupt;
 
 import items.bilder;
 
+import sound.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,16 +14,24 @@ import einstellung.einstellung;
 import java.io.*;
 
 public class Hauptmenue extends JPanel {
+	/** declares the main method*/
     private HauptMain main = null;
+    /** declares the images of the buttons*/
     private bilder[] imageButtons = null;
+    /**declares what is selected on start up*/
     private int selection = P2;
 
+    /** declares the background image*/
     private static Image backgroundImg = null;
+    /** declares the button images*/
     private static Image[] buttonImagesDown = null;
+    /***/
     private static Image[] buttonImagesUp = null;
-    private static Object hints = null;
+    /** declares the position of p2*/
     private static final int P2 = 0;
+    /** declares the position of the options*/
     private static final int CONTROL_SETUP = 1;
+    /** declares the postion of the exit*/
     private static final int EXIT = 2;
 
     static {
@@ -49,7 +59,7 @@ public class Hauptmenue extends JPanel {
     }
 
     /**
-     * Menü erstellen.
+     * creates the menue with the postions of the buttons
      * @param main HauptMain object
      */
     public Hauptmenue(HauptMain main) {
@@ -78,10 +88,11 @@ try {
         for (int i = P2; i <= EXIT; i++)
             imageButtons[i].setInfo(120, (400 / (40 / main.size)) + (dy * i), i);
         imageButtons[P2].setBevel(true);
+        HauptMain.sndEffectPlayer.playSound("bomberman_hauptmenue");
     }
 
     /**
-     * verarbeitet gedrückte tasten.
+     * converts pressed keys in the menue
      * @param evt key event
      */
     public void keyPressed(KeyEvent evt) {
@@ -103,7 +114,7 @@ try {
     }
 
     /**
-     * auswahlverarbeiter
+     * converts the choosen buttons, either starts a new game, or opens the option menue or exit the game
      * @param command command
      */
     public void doCommand(int command) {
@@ -115,13 +126,13 @@ try {
                  new einstellung(main);
                  break;
             case EXIT:
-                /** nachfrage ob exit ist korrekt */
+                /** questions if you really want to close the game */
                 JOptionPane pane =
                 new JOptionPane("Willst du wirklich Bomberman verlassen?");
-                /** ja oder nein */
+                /** yes or no */
                 pane.setOptionType(JOptionPane.YES_NO_OPTION);
                 pane.setMessageType(JOptionPane.WARNING_MESSAGE);
-                /** erzeuge dialog */
+                /** creates dialog */
                 JDialog dialog = pane.createDialog(this, "Bomberman Schließen?");
                 dialog.setResizable(false);
                 /** show dialog */

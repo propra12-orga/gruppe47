@@ -12,31 +12,33 @@ public class Datei {
 /**
 * Reads the xml file; converts the lines in the file to strings, then converts them to a readable
 * char array
+* @param pfad needs the given path to read from the xml
+* @return the created char array to convert 
 */
 	public char[][] read(String pfad){
-		//char array for the tokens
+		/** char array for the tokens */
 		char feld[][] = new char [28][28];
 		try {
-			//sax builder for reading the file
+			/**sax builder for reading the file */
 			SAXBuilder builder = new SAXBuilder();
-			//to work with thx xml document the given path must be set
+			/**to work with thx xml document the given path must be set */
 			Document doc = builder.build(pfad);
-			// gets the root element of the xml file, so the 'brackets' of the document
+			/** gets the root element of the xml file, so the 'brackets' of the document */
 			Element spielfeld = doc.getRootElement();
-			//reads line 1 of the xml file
+			/**reads line 1 of the xml file */
 			Element reihe_1 = spielfeld.getChild("zeile_1");
 			String r1 = reihe_1.getText();
-			//reads line 2 of the xml file
+			/**reads line 2 of the xml file*/
 			Element reihe_2= spielfeld.getChild("zeile_2");
 			String r2 = reihe_2.getText();
-			//reads line 3 of the xml file
+			/**reads line 3 of the xml file*/
 			Element reihe_3 = spielfeld.getChild("zeile_3");
 			String r3 = reihe_3.getText();
-			//reads line 4 of the xml file
+			/**reads line 4 of the xml file*/
 			Element reihe_4 = spielfeld.getChild("zeile_4");
 			String r4 = reihe_4.getText();
-			//reads line 5 of the xml file
-			// and so on
+			/**reads line 5 of the xml file*/
+			/** and so on*/
 			Element reihe_5 = spielfeld.getChild("zeile_5");
 			String r5 = reihe_5.getText();
 
@@ -109,7 +111,7 @@ public class Datei {
 			Element reihe_28 = spielfeld.getChild("zeile_28");
 			String r28 = reihe_28.getText();
 
-			//Fills the 2d array with the strings
+			/**Fills the 2d array with the strings*/
 			for (int j=0;j<28;j++)
 			{
 				for (int i=0;i<28;i++)

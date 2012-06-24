@@ -1,7 +1,7 @@
 package Spielfeld;
 import haupt.HauptMain;
 import haupt.Hauptspiel;
-import haupt.Main;
+
 import items.bombe;
 import items.bonus;
 import items.feuer;
@@ -135,7 +135,7 @@ public class spielfeld extends JPanel {
         exitImages = new Image[2][2];
         fireImages = new Image[8][8];
         fireBrickImages = new Image[3][8];
-        bonusImages = new Image[2][2];
+        bonusImages = new Image[3][3];
 
         try {
             String[] strs = new String[3];
@@ -196,7 +196,7 @@ public class spielfeld extends JPanel {
             }
 
             /** lade bonus bilder */
-            for (int i = 0; i < 2; i++) for (f = 0; f < 2; f++)
+            for (int i = 0; i < 3; i++) for (f = 0; f < 2; f++)
             {
                 str = HauptMain.RP + "Images/BomberBonuses/" +
                 (i == 0 ? "F" : "B") + (f + 1) + ".gif";

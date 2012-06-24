@@ -1,6 +1,6 @@
 package items;
 import haupt.HauptMain;
-import haupt.Main;
+
 
 import java.awt.*;
 import javax.swing.*;

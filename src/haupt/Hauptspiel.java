@@ -13,17 +13,26 @@ import java.io.*;
 
 public class Hauptspiel extends JPanel
 implements ActionListener {
+	/**declares the main mathode*/
     private HauptMain main = null;
+    /** declares the boolean for gameover*/
     private boolean gameOver = false;
+    /**declares the fiel*/
     private spielfeld feld = null;
+    /** declares the winner*/
     private int winner = -1;
+    /**declares the timer for the game*/
     private Timer timer = null;
+    /** declares the elapsed seconds for the timer*/
     private int elapsedSec = 0;
 
-    private static Object hints = null;
+    /** declares the images*/
     private static Image[] images = null;
+    /** declares the total players */
     public static int totalPlayers = 1;
+    /** declares the players who are left*/
     public static int playersLeft = totalPlayers;
+    /** declares the players*/
     public static figur[] players = null;
 
     static
@@ -58,13 +67,6 @@ implements ActionListener {
         this.main = main;
         this.feld = feld;
         this.totalPlayers = this.playersLeft = totalPlayers;
-      /*  try {
-            MediaTracker tracker = new MediaTracker(this);
-            for (int i = 0; i < 6; i++) tracker.addImage(images[i], i);
-            tracker.waitForAll();
-        }
-        catch (Exception e) { new Error(e);}
-*/
         players = new figur[totalPlayers];
         /** create the players */
         for (int i = 0; i < totalPlayers; i++)
@@ -106,6 +108,7 @@ implements ActionListener {
     }
 
     /**
+     * paints the graphics when one player won and while the players are alive 
      * @param graphics graphics handle
      */
     public void paint(Graphics graphics) {
@@ -148,6 +151,7 @@ implements ActionListener {
 
 
     /**
+     * paint method
      * @param x x-coordinate
      * @param y y-coordinate
      * @param w width
@@ -157,6 +161,11 @@ implements ActionListener {
         paintImmediately(x, y, w, h);
     }
 
+    /**
+     * checks if there is a winner, set the elapsed time +1 when any action is performed by the players,
+     * paints the image for the winner
+     * @param evt action event
+     */
     public void actionPerformed(ActionEvent evt) {
         elapsedSec += 1;
         if (elapsedSec >= 4)

@@ -13,16 +13,24 @@ import einstellung.Error;
 
 import java.lang.Integer;
 import java.io.*;
-
+/**
+ * 
+ * @author Laptop
+ *
+ */
 
 public class HauptMain extends JFrame {
-    /** pfad für die dateien */
+    /** path for the files */
     public static String RP = "./";
+    /** declares the menue*/
     private Hauptmenue menu = null;
+    /** declares the game*/
     private Hauptspiel spiel = null;
-    
+    /** declares the soundeffects for the play*/
     public static Soundeffekt sndEffectPlayer = null;
+    /** scale value for the window*/
     public static final int shiftCount = 4;
+    /** defines the size of the window*/
     public static final int size = 1 << shiftCount;
 
     static {
@@ -30,13 +38,13 @@ public class HauptMain extends JFrame {
     }
 
     /**
-     * Konstruiere main frame.
+     * constructs main frame.
      */
     public HauptMain() {
 
         addWindowListener(new WindowAdapter() {
             /**
-             * verarbeitet fensterschließen
+             * converts the window close action
              * @param evt window event
              */
             public void windowClosing(WindowEvent evt) {
@@ -47,7 +55,7 @@ public class HauptMain extends JFrame {
         /** keyboard listner*/
         addKeyListener(new KeyAdapter() {
             /**
-             * verarbeitet gedrückte tasten.
+             * converts pressed keys on the keyboard
              * @param evt keyboard event
              */
             public void keyPressed(KeyEvent evt) {
@@ -56,7 +64,7 @@ public class HauptMain extends JFrame {
             }
 
             /**
-             * verarbeitet losgelassene tasten.
+             * converts released keys
              * @param evt keyboard event
              */
             public void keyReleased(KeyEvent evt) {
@@ -95,11 +103,14 @@ public class HauptMain extends JFrame {
      */
     public void newGame(int players)
     {
+    	/** loading screen */
         JDialog dialog = new JDialog(this, "Lade Spiel...", false);
         dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         dialog.setSize(new Dimension(200, 0));
         dialog.setResizable(false);
+        /** x coordinates of the loading screen*/
         int x = getLocation().x + (getSize().width - 200) / 2;
+        /** x coordinates of the loading screen*/
         int y = getLocation().y + getSize().height / 2;
         dialog.setLocation(x, y);
         dialog.show();
@@ -115,7 +126,7 @@ public class HauptMain extends JFrame {
     }
 
     /**
-     * main methode.
+     * main method.
      * @param args arguments
      */
     public static void main(String[] args) {

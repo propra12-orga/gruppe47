@@ -1,7 +1,7 @@
 package items;
 import haupt.HauptMain;
 import haupt.Hauptspiel;
-import haupt.Main;
+
 
 import java.awt.*;
 import javax.swing.*;

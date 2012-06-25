@@ -1,27 +1,45 @@
 package Spielfeld;
 
-/** Diese Klasse ist dafür da um die Items, Bomben, Blöcke zu generieren **/
+/**
+ * File:         Rand.java
+ * Copyright:    Copyright (c) 20012
+ * @author Musab Kaya
+ * @version 1.6
+ */
+
+/**
+ * This class generates random integers within a given range by creating a
+ * stack of 101 random doubles then generate random integers from the stack
+ * randomly.  First, a stack of size 101 is created and filled with random
+ * doubles.  Everytime an integer is drawn, an element is selected from the
+ * stack randomly.  The value at the selected element is used to generate
+ * a random integer then that element in the stack is filled with a
+ * newly generated double.
+ */
 public class Rand {
-	/** Niedrigste Zahl im Bereich */
+	/** lowest integer in the range */
     private int low = 0;
-    /** Höchste Zahl im Bereich */
+    /** highest integer in the range */
     private int high = 0;
-    /** stack größe */
+    /** stack size */
     private static final int BUFFER_SIZE = 101;
-    /** stack zum halten der zufälligen Doubles */
+    /** stack to hold random doubles */
     private static double[] buffer = new double[BUFFER_SIZE];
     
     
-    /** Fülle den stack mit 101 zufälligen double **/
+    /**
+     * Fill the stack with 101 random doubles using the built-in random double
+     * generator.
+     */
     static {
         for (int i = 0; i < BUFFER_SIZE; i++)
             buffer[i] = java.lang.Math.random();
     }
 
     /**
-     * Konstruiert ein Objekt das zufällige integers im bestimmten bereich erstellt.
-     * @param low kleinste integer im bereich
-     * @param high größte integer im bereich
+     * Constructs an object that generates random integers in a given range.
+     * @param low the lowest integer in the range
+     * @param high the highest integer in the range
      */
     public Rand(int low, int high) {
         this.low = low;
@@ -29,8 +47,9 @@ public class Rand {
     }
     
     /**
-     * Nehme den nächsten zufälligen double aus dem stack und generiere ein integer daraus.
-     * @return ein zufälliger integer
+     * Get the next random double from the stack then generate an integer from
+     * it.
+     * @return a random integer
      */
     public int draw() {
         int result = low + (int)((high - low + 1) * nextRandom());
@@ -38,20 +57,20 @@ public class Rand {
     }
 
     /**
-     * Ziehe einen zufälligen Element aus dem stack und speichere den Wert in eine
-     * variable dann fülle das element mit einem neuen zufälligen double.
-     * @return eine zufällige double
+     * Pick a random element in the stack and store the value of it into a
+     * variable to be returned then fill that element with a new random double.
+     * @return a random double
      */
     private static double nextRandom() {
-        /** ziehe ein zufälliges element aus dem stack */
+        /** pick a random element in the stack */
         int position = (int)(java.lang.Math.random() * BUFFER_SIZE);
         if (position == BUFFER_SIZE)
             position = BUFFER_SIZE - 1;
-        /** speichere den Wert des Elements */
+        /** store the value of that element */
         double result = buffer[position];
-        /** fülle das Element mit einem neuen zufälligen double */
+        /** fill that element with a new random double */
         buffer[position] = java.lang.Math.random();
-        /** return den Wert */
+        /** return the value */
         return result;
     }
 }

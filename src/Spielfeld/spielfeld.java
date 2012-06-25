@@ -17,6 +17,13 @@ import java.io.*;
 import java.util.Vector;
 
 /**
+ * File:         spielfeld.java
+ * Copyright:    Copyright (c) 2012
+ * @author Musab Kaya
+ * @version 1.6
+ */
+
+/**
  * This class draws the map and handles things like bonuses and bombs.
  */
 public class spielfeld extends JPanel {
@@ -80,17 +87,17 @@ public class spielfeld extends JPanel {
 
     /** image handles for the map images */
     private static Image[][] feldImages = null;
-    /** BombenBild */
+    /** bomb images */
     public static Image[] bombImages = null;
-    /** FeuerBild */
+    /** fire images */
     public static Image[][] fireImages = null;
-    /** Feuerstein Bilder */
+    /** fire brick images */
     public static Image[][] fireBrickImages = null;
-    /** BonusBilder */
+    /** bonus images */
     public static Image[][] bonusImages = null;
-    /** Exit Bilder */
+    /** exit images */
     public static Image[][] exitImages = null;
-    /** Feuertyp aufzählung */
+    /** fire type enumerations */
     public static final int FIRE_CENTER = 0;
     public static final int FIRE_VERTICAL = 1;
     public static final int FIRE_HORIZONTAL = 2;
@@ -99,7 +106,7 @@ public class spielfeld extends JPanel {
     public static final int FIRE_EAST = 5;
     public static final int FIRE_WEST = 6;
     public static final int FIRE_BRICK = 7;
-    /** raster aufzählung */
+    /** grid slot type enumerations */
     public static final int EXIT_FIRE = -6;
     public static final int EXIT_BOMB = -5;
     public static final int BONUS_FIRE = -4;
@@ -109,37 +116,42 @@ public class spielfeld extends JPanel {
     public static final int BRICK = 1;
     public static final int BOMB = 3;
     public static final int EXIT = 4;
-    /** zufälliges level generator */
+    /** random level generator */
     private static Rand levelRand = null;
-    /** zufällig bonus generieren */
+    /** random bonus generator */
     private static Rand bonusRand = null;
-    /** zufällig exit generieren */
+    /** random exit generator */
     private static Rand exitRand = null;
-    /** aktuelles Level */
+    /** current level */
     public static int level = 0;
+	/** rendering hints */
     private static Object hints = null;
 
     static {
  
 
-        /** erstellt Level zufällig */
+        /** create the level random generator */
         levelRand = new Rand(0, 100);
-        /** erstellt bonus zufällig */
+        /** create the bonus random generator */
         bonusRand = new Rand(0, 7);
-        /** erstellt exit zufällig */
+        /** create the exit random generator */
         exitRand = new Rand(0, 7);
-        /** Erstellt Bild Objekt array */
+        /** creat the image objects array */
         feldImages = new Image[3][3];
-        /** Erstellt Bomben Objekt Array */
+        /** create the bomb objects array */
         bombImages = new Image[2];
+		/** create the exit objects array */
         exitImages = new Image[2][2];
-        fireImages = new Image[8][8];
+        /** create the fire objects array */
+		fireImages = new Image[8][8];
+		/** create the fire brick objects array */
         fireBrickImages = new Image[3][8];
+		/** create the bonus image objects array */
         bonusImages = new Image[3][3];
 
         try {
             String[] strs = new String[3];
-            /** lade spielfeld bilder */
+            /** load the map images */
             for (int i = 0; i < 2; i++) {
                 strs[0] = HauptMain.RP + "Images/BomberWalls/" + (i + 1);
                 strs[1] = HauptMain.RP + "Images/BomberBricks/" + (i + 1);
@@ -159,14 +171,14 @@ public class spielfeld extends JPanel {
             }
 
             String str = null;
-            /** lade bomben bilder */
+            /** load the bomb images */
             for (int i = 0; i < 2; i++) {
                 str = HauptMain.RP + "Images/BomberBombs/" + (i + 1) + ".gif";
                 bombImages[i] = Toolkit.getDefaultToolkit().getImage(
                 new File(str).getCanonicalPath());
             }
 
-            /** lade die feuer bilder */
+            /** load the fire images */
             for (int t = 0; t < 7; t++) for (int i = 0; i < 8; i++)
             {
                 str = HauptMain.RP + "Images/BomberFires/";
@@ -186,7 +198,7 @@ public class spielfeld extends JPanel {
             }
 
             int f = 0;
-            /** lade feuer blöcke */
+            /** load the fire brick images */
             for (int i = 0; i < 2; i++) for (f = 0; f < 8; f++)
             {
                 str = HauptMain.RP + "Images/BomberFireBricks/" +
@@ -195,7 +207,7 @@ public class spielfeld extends JPanel {
                 new File(str).getCanonicalPath());
             }
 
-            /** lade bonus bilder */
+            /** load the bonus image sprites */
             for (int i = 0; i < 3; i++) for (f = 0; f < 2; f++)
             {
                 str = HauptMain.RP + "Images/BomberBonuses/" +
@@ -203,7 +215,7 @@ public class spielfeld extends JPanel {
                 bonusImages[i][f] = Toolkit.getDefaultToolkit().getImage(
                 new File(str).getCanonicalPath());
             }
-            /** lade exit bilder */
+            /** load the exit image sprites */
             for (int i = 0; i < 2; i++) for (f = 0; f < 2; f++) {
                 str = HauptMain.RP + "Images/BomberExit/" + (i + 1) + 
                 (i == 0 ? "F" : "B") + (f + 1) + ".gif";
@@ -216,38 +228,47 @@ public class spielfeld extends JPanel {
 
     public spielfeld(HauptMain main) {
         this.main = main;
-        /** generiere level zufällig */
+        /** generator random level */
         level = levelRand.draw() % 2;
         MediaTracker tracker = new MediaTracker(this);
+		/** prepare the images */
         try
         {
             int counter = 0;
-            /** lade feld bilder */
+            /** load the map images */
             for (int i = 0; i < 2; i++) for (int j = 0; j < 3; j++) {
                 if (feldImages[i][j] != null)
                 { tracker.addImage(feldImages[i][j], counter++); }
             }
-            /** lade bomben bilder */
+            /** load the bomb images */
             for (int i = 0; i < 2; i++)
                 tracker.addImage(bombImages[i], counter++);
+			/** load the fire brick images */
             for (int i = 0; i < 8; i++)
                 fireImages[FIRE_BRICK][i] = fireBrickImages[level][i];
-            for (int i = 0; i < 8; i++) for (int j = 0; j < 8; j++)
+            /** load the fire images */
+			for (int i = 0; i < 8; i++) for (int j = 0; j < 8; j++)
                 tracker.addImage(fireImages[i][j], counter++);
-            tracker.waitForAll();
+            
+			/** wait for images to finish loading */
+			tracker.waitForAll();
         } catch (Exception e) { new Error(e); }
 
         bombs = new Vector();
         bonuses = new Vector();
         exits = new Vector();
+		/** create the fire grid */
         fireGrid = new boolean[30][30];
+		/** create the bomb grid */
         bombGrid = new bombe[30][30];
+		/** create the bonus grid */
         bonusGrid = new bonus[30][30];
+		/** create the exit grid */
         exitGrid = new exit[30][30];
         
-        /** Erstelle feld raster */
+        /** create the map grid */
         grid = new int[30][30];
-        /** fülle den rand mit ausnahme des spielers */
+        /** fill the map with walls by alternating r by c */
         for (int r = 0; r < 30; r++) for (int c = 0; c < 30; c++) {
             /** if it's the edge */
             if (r == 0 || c == 0 || r == 29 || c == 29) grid[r][c] = WALL;
@@ -261,7 +282,7 @@ public class spielfeld extends JPanel {
 
         int x, y;
         Rand ri = new Rand(1, 28);
-        /** generiert zufällig blöcke **/
+        /** generate random bricks */
         for (int i = 0; i < 256 * 2; i++)
         {
             x = ri.draw();
@@ -270,26 +291,28 @@ public class spielfeld extends JPanel {
                grid [x][y] = BRICK;
         }
 
-        /** spieler kann hier stehen */
+        /** clear corners so players can stand there */
         grid [ 1][ 1] = grid [ 2][ 1] = grid [ 1][ 2] =
         grid [ 1][28] = grid [ 2][28] = grid [ 1][27] =
         grid [28][ 1] = grid [14][ 1] = grid [28][ 2] =
         grid [28][28] = grid [15][27] = grid [27][28] = NOTHING;
 
-        /** hintergrundfarbe */
+        /** create background color */
         backgroundColor = new Color(52, 108, 108);
-        /** setze panel grösse */
+        /** set panel size */
         setPreferredSize(new Dimension(30 << HauptMain.shiftCount,
         30 << HauptMain.shiftCount));
-        setDoubleBuffered(true);
-
+        /** double buffer on */
+		setDoubleBuffered(true);
+		
         setBounds(0, 0, 30 << main.shiftCount, 30 << main.shiftCount);
         setOpaque(false);
+		/** add the map to the bottom layer */
         main.getLayeredPane().add(this, 1000);
     }
 
     /**
-     * Spielende
+     * Sets game over flag on
      */
      public void setGameOver() {
         gameOver = true;
@@ -298,7 +321,7 @@ public class spielfeld extends JPanel {
      }
 
      /**
-      * Erstelle EXIT
+      * Creates a EXIT
       * @param x x-coordinate
       * @param y y-coordinate
       * @param owner owner
@@ -316,7 +339,7 @@ public class spielfeld extends JPanel {
     }
     
     /**
-     * Lösche exit
+     * Removes a exit
      * @param x x-coordinate
      * @param y y-coordinate
      */
@@ -342,7 +365,7 @@ public class spielfeld extends JPanel {
      }
     
      /**
-      * Erstelle Bonus
+      * Creates a bonus.
       * @param x x-coordinate
       * @param y y-coordinate
       * @param owner owner
@@ -360,7 +383,7 @@ public class spielfeld extends JPanel {
     }
 
     /**
-     * Lösche bonus
+     * Removes a bonus.
      * @param x x-coordinate
      * @param y y-coordinate
      */
@@ -385,8 +408,8 @@ public class spielfeld extends JPanel {
         }
      }
 
-     /**
-      * Erstelle bombe
+    /**
+      * Creates a bomb.
       * @param x x-coordinate
       * @param y y-coordinate
       * @param owner owner
@@ -400,7 +423,7 @@ public class spielfeld extends JPanel {
     }
 
     /**
-     * lösche bombe
+     * Removes a bomb.
      * @param x x-coordinate
      * @param y y-coordinate
      */
@@ -421,147 +444,175 @@ public class spielfeld extends JPanel {
      }
 
      /**
-      * erstelle feuer
-      * @param x x-coordinate
-      * @param y y-coordinate
-      * @param owner owner
-      * @param type feuer type
-      */
+     * Creates a fire.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @param owner owner
+     * @param type fire type
+     */
       public void createFire(int x, int y, int owner, int type)
       {
          int _x = (x >> HauptMain.shiftCount) << HauptMain.shiftCount;
          int _y = (y >> HauptMain.shiftCount) << HauptMain.shiftCount;
          boolean createFire = false;
-         /** wenn bombe dort ist */
+         /** if there's a bomb here */
          if (grid[_x >> HauptMain.shiftCount][_y >> HauptMain.shiftCount] ==
          BOMB) {
-             /** dann verkürze die bombe */
+             /** then short the bomb */
              if (bombGrid[_x >> HauptMain.shiftCount][_y
              >> HauptMain.shiftCount] != null)
              bombGrid[_x >> HauptMain.shiftCount][_y
              >> HauptMain.shiftCount].shortBomb();
          }
-         /** wenn kein feuer dort ist */
+         /** if there's no fire there already */
          else if (!fireGrid[_x >>
             HauptMain.shiftCount][_y >> HauptMain.shiftCount]) {
              createFire = true;
-             /** erstelle feuer */
+             /** create a fire there */
              feuer f = new feuer(this, _x, _y, type);
          }
-         /** Wenn Zentrum des Feuers hier */
+         /** if this is a center */
          if (createFire && type == FIRE_CENTER) {
              int shiftCount = HauptMain.shiftCount;
              int size = HauptMain.size;
-             /** dann erstelle feuerflammen*/
+             /** then create a chain of fire */
              int northStop = 0, southStop = 0, westStop = 0, eastStop = 0,
              northBlocks = 0, southBlocks = 0, westBlocks = 0, eastBlocks = 0;
-             /** fuckt wie lang die flamme gehen kann */
+             /** see how long the fire can be */
              for (int i = 1; i <= Hauptspiel.players[owner].fireLength; i++) {
-                 /** nur nach süden */
+                 /** if it can still go south */
                  if (southStop == 0) { if (((_y >> shiftCount) + i) < 30) {
-                     /** wenn keine wand */
+                    /** if there isnt't a wall there */
                     if (grid[_x >> shiftCount][(_y >> shiftCount) + i] != WALL) {
-                       /** wenn hier nichts ist */
+                       /** if there's something there though */
                        if (grid[_x >> shiftCount][(_y >> shiftCount) + i]
                        != NOTHING)
-                          /** dann erstelle flamme */
+                          /** then create a tail fire there */
                           { southStop = grid[_x >> shiftCount]
                              [(_y >> shiftCount) + i]; }
-                         /** erhöhe Feuer Kette */
+                        /** increase fire chain */
                        southBlocks += 1;
                      } else southStop = -1; }
                  }
-                 /** nur nach norden */
+                 /** if it can still go north */
                  if (northStop == 0) { if (((_y >> shiftCount) - 1) >= 0) {
-                    if (grid[_x >> shiftCount][(_y >> shiftCount) - i] != WALL) {
-                       if (grid[_x >> shiftCount][(_y >> shiftCount) - i]
+                    /** if there isn't a wall there */
+					if (grid[_x >> shiftCount][(_y >> shiftCount) - i] != WALL) {
+                       /** if there's something there though */
+					   if (grid[_x >> shiftCount][(_y >> shiftCount) - i]
                        != NOTHING)
-                          { northStop = grid[_x >> shiftCount]
+                          /** then create a tail fire there */
+						  { northStop = grid[_x >> shiftCount]
                              [(_y >> shiftCount) - i]; }
-                       northBlocks += 1;
-                       } else northStop = -1; }
+                        /** increaes fire chain */
+					    northBlocks += 1;
+                        } else northStop = -1; }
                  }
-                 /** nur nach osten */
+                 /** if it can still go east */
                  if (eastStop == 0) { if (((_x >> shiftCount) + i) < 30) {
-                    if (grid[(_x >> shiftCount) + i][_y >> shiftCount] != WALL) {
-                       if (grid[(_x >> shiftCount) + i][_y >> shiftCount]
+                    /** if there isn't a wall there */
+					if (grid[(_x >> shiftCount) + i][_y >> shiftCount] != WALL) {
+                       /** if there's somethign there though */
+					   if (grid[(_x >> shiftCount) + i][_y >> shiftCount]
                        != NOTHING)
-                          { eastStop = grid[(_x >> shiftCount) + i]
+                          /** then create a tail fire there */
+						  { eastStop = grid[(_x >> shiftCount) + i]
                              [_y >> shiftCount]; }
-                       eastBlocks += 1;
+                       /** increase fire chain */
+					   eastBlocks += 1;
                      } else eastStop = -1; }
                  }
-                 /** nur nach westen */
+                 /** if it can still go west */
                  if (westStop == 0) { if (((_x >> shiftCount) - i) >= 0) {
-                    if (grid[(_x >> shiftCount) - i][_y >> shiftCount] != WALL) {
-                       if (grid[(_x >> shiftCount) - i]
+                    /** if there isn't a wall there */
+					if (grid[(_x >> shiftCount) - i][_y >> shiftCount] != WALL) {
+                       /** if there's something there through */
+					   if (grid[(_x >> shiftCount) - i]
                        [_y >> shiftCount] != NOTHING)
-                          { westStop = grid[(_x >> shiftCount) - i]
+							/** then create a tail fire there */
+							{ westStop = grid[(_x >> shiftCount) - i]
                              [_y >> shiftCount]; }
+							 /** increase fire chain */
                        westBlocks += 1;
                      } else westStop = -1; }
                  }
              }
-             /** Erstelle Kette nach norden */
+             /** create the north chain */
              for (int i = 1; i <= northBlocks; i++) {
-                 if (i == northBlocks) {
-                     /**wenn dort ein block ist */
+                 /** if this is a tail */
+				 if (i == northBlocks) {
+                      /** if there's a brick */
                     if (northStop == BRICK)
-                       /** dann erstelle ein brennendes block */
+                       /** then create a burning brick sprite */
                        createFire(_x, _y - (i * size), owner, FIRE_BRICK);
-                     /** wenn es kein block ist dann erstelle flamme */
+                     /** then create a burning brick sprite */
                     else createFire(_x, _y - (i * size), owner, FIRE_NORTH);
                  }
-                 /** wenn keine Flamme erstellt wird,  dann erstelle Feuer */
+                 /** if it's not a tail then create a normal fire */
                  else createFire(_x, _y - (i * size), owner, FIRE_VERTICAL);
              }
              for (int i = 1; i <= southBlocks; i++) {
-                 if (i == southBlocks) {
+                 /** if this is a tail */
+				 if (i == southBlocks) {
+					/** if there's a brick */
                      if (southStop == BRICK)
+					 /** then create a burning brick sprite */
                         createFire(_x, _y + (i * size), owner, FIRE_BRICK);
-                     else createFire(_x, _y + (i * size), owner, FIRE_SOUTH);
+                     /** if it's not a brick then create a tail */
+					 else createFire(_x, _y + (i * size), owner, FIRE_SOUTH);
                  }
+				 /** if it's not a tail then create a normal fire */
                  else createFire(_x, _y + (i * size), owner, FIRE_VERTICAL);
              }
              for (int i = 1; i <= eastBlocks; i++) {
+				/** if this is a tail */
                  if (i == eastBlocks) {
+					/** if there's a brick */
                      if (eastStop == BRICK)
+						/** then create a burning brick sprite */
                         createFire(_x + (i * size), _y, owner, FIRE_BRICK);
-                     else createFire(_x + (i * size), _y, owner, FIRE_EAST);
+                     /** if it's not a brick then create a tail */
+					 else createFire(_x + (i * size), _y, owner, FIRE_EAST);
                  }
+				 /** if it's not a tail then create a normal fire */
                  else createFire(_x + (i * size), _y, owner, FIRE_HORIZONTAL);
              }
              for (int i = 1; i <= westBlocks; i++) {
+				/** if this is a tail */
                  if (i == westBlocks) {
+					/** if there's a brick */
                      if (westStop == BRICK)
+					 /** then create a burning brick sprite */
                         createFire(_x - (i * size), _y, owner, FIRE_BRICK);
-                     else createFire(_x - (i * size), _y, owner, FIRE_WEST);
+                     /** if it's not a brick then create a tail */
+					 else createFire(_x - (i * size), _y, owner, FIRE_WEST);
                  }
+				 /** if it's not a tail then create a normal fire */
                  else createFire(_x - (i * size), _y, owner, FIRE_HORIZONTAL);
              }
          }
       }
 
-     /**
-      * Zeichne Methode.
-      * @param graphics graphics handle
-      */
+    /**
+     * Drawing method.
+     * @param graphics graphics handle
+     */
      public synchronized void paint(Graphics graphics) {
         Graphics g = graphics;
-            /** spiel vorbei */
+            /** if game is over */
             if (gameOver) {
-                /** hintergrund schwarz setzen */
+                /** fill the screen with black color */
                 g.setColor(Color.black);
                 g.fillRect(0, 0, 30 << HauptMain.shiftCount,
                 30 << HauptMain.shiftCount);
             }
-            /** spiel nicht vorbei */
+            /** if game isn't over yet */
             else {
-                /** hintergrund farbe setzen */
+                /** fill window with background color */
                 g.setColor(backgroundColor);
                 g.fillRect(0, 0, 30 << HauptMain.shiftCount,
                 30 << HauptMain.shiftCount);
-                /** zeichne das feld */
+                /** draw the map */
                 for (int r = 0; r < 30; r++) for (int c = 0; c < 30; c++) {
                     /** if there's something in the block */
                     if (grid[r][c] > NOTHING &&
@@ -571,10 +622,10 @@ public class spielfeld extends JPanel {
                         r << HauptMain.shiftCount, c << HauptMain.shiftCount,
                         HauptMain.size, HauptMain.size, null);
                     }
-                    /** wenn block leer */
+                    /** if the block is empty */
                     else {
                         if (feldImages[level][2] != null) {
-                           /** untergrund zeichnen */
+                           /** draw the floor */
                            g.drawImage(feldImages[level][2],
                            r << HauptMain.shiftCount, c <<
                            HauptMain.shiftCount, HauptMain.size,
@@ -585,7 +636,7 @@ public class spielfeld extends JPanel {
             }
         
         if (!gameOver) {
-            /** zeichne bonus */
+            /** draw the bonuses */
             Bonus bb = null;
             int i = 0, k = bonuses.size();
             while (i < k) {
@@ -595,7 +646,7 @@ public class spielfeld extends JPanel {
                 i += 1;
                 k = bonuses.size();
             }
-            /** zeichne exit */
+            /** draw the exit */
             Exit bbb = null;
             i = 0; k = exits.size();
             while (i < k) {
@@ -605,7 +656,7 @@ public class spielfeld extends JPanel {
                 i += 1;
                 k = exits.size();
             }
-            /** zeichne bombe */
+            /** draw the bombs */
             Bomb b = null;
             i = 0; k = bombs.size();
             while (i < k)
@@ -620,28 +671,29 @@ public class spielfeld extends JPanel {
      }
 
     /**
-     * Zeichne Methode für Java 2's Graphics2D
+     * Drawing method for Java 2's Graphics2D
      * @param graphics graphics handle
      */
     public void paint2D(Graphics graphics) {
         Graphics2D g2 = (Graphics2D)graphics;
         /** set the rendering hints */
         g2.setRenderingHints((RenderingHints)hints);
-        /** spiel vorbei */
+        /** if game is over */
         if (gameOver) {
-            /** hintergrund schwarz setzen */
+            /** fill the screen with black color */
             g2.setColor(Color.black);
             g2.fillRect(0, 0, 30 << HauptMain.shiftCount,
             30 << HauptMain.shiftCount);
         }
-        /** wenn spiel nicht vorbei ist */
+        /** if game isn't over yet */
         else {
-            /** hintergrund farbe setzen */
+            /** fill window with background color */
             g2.setColor(backgroundColor);
             g2.fillRect(0, 0, 30 << HauptMain.shiftCount,
             30 << HauptMain.shiftCount);
-            for (int r = 0; r < 30; r++) for (int c = 0; c < 30; c++) {
-                /** wenn block voll */
+            /** draw the map */
+			for (int r = 0; r < 30; r++) for (int c = 0; c < 30; c++) {
+                /** if there's something in the block */
                 if (grid[r][c] > NOTHING &&
                 grid[r][c] != BOMB && grid[r][c] != FIRE_BRICK &&
                 feldImages[level][grid[r][c]] != null) {
@@ -649,9 +701,10 @@ public class spielfeld extends JPanel {
                     r << HauptMain.shiftCount, c << HauptMain.shiftCount,
                     HauptMain.size, HauptMain.size, null);
                 }
-                /** wenn block leer */
+                /** if the block is empty */
                 else {
                     if (feldImages[level][2] != null) {
+						/** draw the floor */
                        g2.drawImage(feldImages[level][2],
                        r << HauptMain.shiftCount, c <<
                        HauptMain.shiftCount, HauptMain.size,

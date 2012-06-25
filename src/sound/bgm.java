@@ -6,16 +6,24 @@ import java.io.*;
 
 import einstellung.Error;
 
+/**
+ * File:         bgm
+ * Copyright:    Copyright (c) 2012
+ * @author martin
+ * @version 1.6
+ */
 
-
-
+/**
+ * This class plays the background music.
+ */
 public class bgm {
-
+	/** sound object */
     private static Object player;
-    private static int lastSelection = -1;  /** letzte Musik Datei die gespielt wurde **/
+	/** last music played */
+    private static int lastSelection = -1; 
 
     static {
-           /** erstelle Sound Objekt und lade die Musik Dateien **/
+           /** create the sound object and load the music files */
            try {
                player = new sound(
            new File(HauptMain.RP + "Sounds/BomberBGM/").
@@ -25,11 +33,16 @@ public class bgm {
            ((sound)player).open();
         }
 
-
-	
+	/**
+     * Change BGM music.
+     * @param arg BGM music to chagne to
+     */
     public static void change(String arg) {
         
-            /** ändere die Musik nur wenn die aktuelle Musik nicht die gleiche ist wie die angegebene Musik **/
+            /**
+             * change music only if the the current music is not equal to
+             * the specified music
+             */
             int i = 0;
             while (i < ((sound)player).sounds.size() &&
             ((sound)player).sounds.elementAt(i).
@@ -40,5 +53,4 @@ public class bgm {
                 ((sound)player).change(lastSelection, true);
             }
         }
-
 }

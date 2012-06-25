@@ -7,7 +7,7 @@ import java.io.*;
  * File:         Soundeffekt.java
  * Copyright:    Copyright (c) 2012
  * @author Martin
- * @version 1.6
+ * @version 2
  */
 
 /**

@@ -4,7 +4,7 @@ package Spielfeld;
  * File:         Rand.java
  * Copyright:    Copyright (c) 20012
  * @author Musab Kaya
- * @version 1.6
+ * @version 2
  */
 
 /**

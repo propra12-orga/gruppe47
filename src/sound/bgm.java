@@ -10,7 +10,7 @@ import einstellung.Error;
  * File:         bgm
  * Copyright:    Copyright (c) 2012
  * @author martin
- * @version 1.6
+ * @version 2
  */
 
 /**

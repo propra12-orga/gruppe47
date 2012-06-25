@@ -7,7 +7,7 @@ import javax.swing.*;
  * File:         einstellung.java
  * Copyright:    Copyright (c) 2012
  * @author Musab Kaya
- * @version 1.6
+ * @version 2
  */
 
  /**

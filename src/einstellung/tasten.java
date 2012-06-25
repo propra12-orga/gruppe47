@@ -6,7 +6,7 @@ import java.io.*;
  * File:         tasten.java
  * Copyright:    Copyright (c) 2012
  * @author Musab Kaya
- * @version 1.6
+ * @version 2
  */
 
 /**

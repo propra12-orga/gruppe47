@@ -7,7 +7,7 @@ import java.io.*;
  * This class displays an error dialog then exits the program when specified.
  *
  * @author Musab Kaya
- * @version 1.6
+ * @version 2
  */
 public class Error
 {

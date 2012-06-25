@@ -15,7 +15,7 @@ import java.util.Vector;
  * This class is used to play sound files.
  *
  * @author Martin
- * @version 1.6
+ * @version 2
  */
 public class SoundFigur extends JPanel
 implements Runnable, LineListener, MetaEventListener, ActionListener
